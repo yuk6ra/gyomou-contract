@@ -12,11 +12,12 @@ contract GyomouNFT is ERC721URIStorage, ERC2981, Ownable {
     uint256 public totalSupply;
     uint256 public MAX_SUPPLY;
     bool isSupplyFrozen;
+    bool isMetadataFrozen;
 
     constructor(
         address _royaltyAddress,
         uint96 _royaltyFee
-    ) ERC721("GYO", "GY") { /// @dev あとで修正する
+    ) ERC721("GYNAME", "GY") {
         _setDefaultRoyalty(_royaltyAddress, _royaltyFee);
     }
     
@@ -49,6 +50,7 @@ contract GyomouNFT is ERC721URIStorage, ERC2981, Ownable {
     }
 
     function setNewTokenURI(uint256 _tokenId, string memory _newURI) external onlyOwner {
+        require(!isMetadataFrozen, "GyomouNFT: Metadata already frozen");
         require(_exists(_tokenId), "GyomouNFT: Nonexistent token");
         _setTokenURI(_tokenId, _newURI);
     }
@@ -61,6 +63,11 @@ contract GyomouNFT is ERC721URIStorage, ERC2981, Ownable {
         require(!isSupplyFrozen, "GyomouNFT: Supply already frozen");
         isSupplyFrozen = true;
         MAX_SUPPLY = totalSupply;
+    }
+
+    function setFreezeMetadata() external onlyOwner {
+        require(!isMetadataFrozen, "GyomouNFT: Metadata already frozen");
+        isMetadataFrozen = true;
     }
 
     function transferOwnership(address newOwner) public override onlyOwner {
