@@ -6,18 +6,18 @@ import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
 pragma solidity ^0.8.15;
 
-contract GyomouNFT is ERC721URIStorage, ERC2981, Ownable {
+contract NFFi is ERC721URIStorage, ERC2981, Ownable {
     using Strings for uint256;
     
     uint256 public totalSupply;
     uint256 public MAX_SUPPLY;
-    bool isSupplyFrozen;
-    bool isMetadataFrozen;
+    bool public isSupplyFrozen;
+    bool public isMetadataFrozen;
 
     constructor(
         address _royaltyAddress,
         uint96 _royaltyFee
-    ) ERC721("GYNAME", "GY") {
+    ) ERC721("NFFi", "GYOMOU") {
         _setDefaultRoyalty(_royaltyAddress, _royaltyFee);
     }
     
